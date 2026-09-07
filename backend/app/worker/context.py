@@ -5,6 +5,7 @@ from langchain_core.language_models.chat_models import BaseChatModel
 
 from app.core.config import get_settings
 from app.images.pipeline import create_image_pipeline
+from app.images.seedream import SeedreamClient
 from app.llm.base import OutlineGenerator, SlideEditGenerator, SlideGenerator
 from app.llm.client import create_chat_model
 from app.llm.deepseek import DeepSeekOutlineGenerator
@@ -56,6 +57,16 @@ async def startup(ctx: dict[str, Any]) -> None:
     ctx["http_client"] = http_client
     ctx["image_pipeline"] = create_image_pipeline(http_client)
 
+    # Seedream 文生图客户端（独立于 PPT 图片管线）
+    settings = get_settings()
+    ctx["seedream_client"] = SeedreamClient(
+        http_client=http_client,
+        base_url=settings.seedream_base_url,
+        api_key=settings.seedream_api_key,
+        model=settings.seedream_model,
+        timeout_seconds=settings.seedream_timeout_seconds,
+    )
+
 
 async def shutdown(ctx: dict[str, Any]) -> None:
     model = ctx.get("chat_model")
@@ -68,3 +79,7 @@ async def shutdown(ctx: dict[str, Any]) -> None:
     http_client = ctx.get("http_client")
     if http_client is not None:
         await http_client.aclose()
+
+    seedream_client = ctx.get("seedream_client")
+    if seedream_client is not None:
+        await seedream_client.aclose()

@@ -22,6 +22,10 @@ class Settings(BaseSettings):
     # 遇到复杂主题时可通过环境变量开启，不把供应商参数写死在工作流里。
     llm_thinking_enabled: bool = False
     llm_timeout_seconds: float = 60
+    seedream_api_key: str = ""
+    seedream_base_url: str = "https://ark.cn-beijing.volces.com/api/v3"
+    seedream_model: str = "doubao-seedream-5-0-260128"
+    seedream_timeout_seconds: float = 120
     # 单份 PPT 同时生成的页数。调高能缩短总时长，但容易触发供应商限流，
     # 且失败会成片出现；3 是延迟与稳定性之间比较稳妥的取值。
     slide_concurrency: int = 3

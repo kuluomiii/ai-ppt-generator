@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { StatusPill } from '@/components/StatusPill'
 import { Button } from '@/components/ui/Button'
+import { DeleteProjectDialog } from '@/features/projects/DeleteProjectDialog'
 import { useDeleteProject, useProjects } from '@/features/projects/api'
 import type { Project } from '@/features/projects/types'
 import { relativeTime } from '@/lib/datetime'
@@ -14,6 +15,7 @@ export default function ProjectsPage() {
   const navigate = useNavigate()
   const projects = useProjects()
   const remove = useDeleteProject()
+  const [deletingProject, setDeletingProject] = useState<Project | null>(null)
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-10">
@@ -39,7 +41,7 @@ export default function ProjectsPage() {
               key={project.id}
               project={project}
               deleting={remove.isPending && remove.variables === project.id}
-              onDelete={() => remove.mutate(project.id)}
+              onDelete={() => setDeletingProject(project)}
             />
           ))}
         </ul>
@@ -49,6 +51,19 @@ export default function ProjectsPage() {
         <p role="alert" className="mt-5 text-sm text-negative">
           {errorMessage(remove.error, '删除失败，请稍后重试')}
         </p>
+      )}
+
+      {deletingProject && (
+        <DeleteProjectDialog
+          project={deletingProject}
+          pending={remove.isPending}
+          onClose={() => setDeletingProject(null)}
+          onConfirm={() =>
+            remove.mutate(deletingProject.id, {
+              onSuccess: () => setDeletingProject(null),
+            })
+          }
+        />
       )}
     </div>
   )

@@ -3,6 +3,8 @@
 @import '@fontsource-variable/manrope';
 /* 幻灯片主题（shared/themes）里声明了衬线标题字体，必须随应用一起加载 */
 @import '@fontsource/instrument-serif';
+/* AI 生图模块「奶油甜品风」字体 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Quicksand:wght@500;600;700&display=swap');
 
 /* 应用外壳的设计令牌。注意：这一套只服务于产品界面本身，
    幻灯片主题的令牌另有一套（shared/themes），两者不可混用，
@@ -104,4 +106,165 @@
 
 @utility animate-in {
   animation: pill-menu-in 140ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* =========================================================
+ * AI 生图模块 · Direction A「奶油甜品风」设计令牌
+ * 仅作用于 .images-module 容器，避免污染 PPT 模块
+ * ========================================================= */
+
+.images-module {
+  /* 色彩 */
+  --img-bg: #FFF9F3;
+  --img-surface: #FFFFFF;
+  --img-pink-light: #FFE4EC;
+  --img-pink: #FFB0C8;
+  --img-pink-deep: #FF8FAE;
+  --img-yellow-light: #FFF3D6;
+  --img-yellow: #FFD98E;
+  --img-yellow-deep: #FFBE4D;
+  --img-text-primary: #5C4033;
+  --img-text-secondary: #9B8578;
+  --img-text-muted: #C4B5AA;
+  --img-border: #F0E4DA;
+  --img-shadow: rgba(180, 140, 120, 0.08);
+
+  /* 圆角 */
+  --img-radius-lg: 24px;
+  --img-radius-md: 16px;
+  --img-radius-sm: 10px;
+
+  /* 字体 */
+  --img-font-cn: 'Noto Sans SC', sans-serif;
+  --img-font-en: 'Quicksand', sans-serif;
+
+  background: var(--img-bg);
+  color: var(--img-text-primary);
+  font-family: var(--img-font-cn);
+  min-height: calc(100vh - 64px);
+  position: relative;
+}
+
+/* 装饰背景光斑 */
+.images-module::before,
+.images-module::after {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.3;
+}
+.images-module::before {
+  top: 10%; left: 5%; width: 180px; height: 180px;
+  background: var(--img-pink-light);
+}
+.images-module::after {
+  bottom: 15%; right: 8%; width: 120px; height: 120px;
+  background: var(--img-yellow-light);
+}
+
+/* 让子元素在装饰之上 */
+.images-module > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== 通用按钮 ===== */
+.img-btn-primary {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, var(--img-pink), var(--img-pink-deep));
+  color: white; border: none; border-radius: var(--img-radius-md);
+  font-size: 15px; font-weight: 600; cursor: pointer;
+  box-shadow: 0 4px 16px rgba(255, 143, 174, 0.3);
+  transition: transform 0.15s, box-shadow 0.15s;
+  font-family: var(--img-font-cn);
+}
+.img-btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(255, 143, 174, 0.4);
+}
+.img-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.img-btn-ghost {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  border: 1.5px solid var(--img-border); background: none;
+  padding: 10px 24px; border-radius: var(--img-radius-md);
+  font-size: 14px; color: var(--img-text-secondary);
+  cursor: pointer; transition: all 0.2s; font-family: var(--img-font-cn);
+}
+.img-btn-ghost:hover { border-color: var(--img-pink); color: var(--img-pink-deep); }
+
+.img-btn-download {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 10px 28px;
+  background: linear-gradient(135deg, var(--img-yellow), var(--img-yellow-deep));
+  color: white; border: none; border-radius: 20px;
+  font-size: 14px; font-weight: 600; cursor: pointer;
+  box-shadow: 0 4px 12px rgba(255, 190, 77, 0.3);
+  font-family: var(--img-font-cn);
+}
+
+/* ===== 卡片 ===== */
+.img-card {
+  background: var(--img-surface);
+  border-radius: var(--img-radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--img-border);
+  box-shadow: 0 4px 16px var(--img-shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+.img-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(180, 140, 120, 0.12);
+}
+
+/* ===== 状态药丸 ===== */
+.img-status-pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 12px; border-radius: 12px;
+  font-size: 11px; font-weight: 600;
+  backdrop-filter: blur(8px);
+}
+.img-status-completed { background: rgba(255,255,255,0.85); color: #6DBE72; }
+.img-status-generating { background: rgba(255,224,236,0.9); color: var(--img-pink-deep); }
+.img-status-failed { background: rgba(255,230,230,0.9); color: #E07070; }
+.img-status-pending { background: rgba(255,243,214,0.9); color: var(--img-yellow-deep); }
+
+/* ===== 表单输入 ===== */
+.img-input-area {
+  width: 100%; min-height: 120px; resize: vertical;
+  border: 1.5px solid var(--img-border); border-radius: var(--img-radius-md);
+  padding: 16px; font-size: 14px; line-height: 1.6;
+  font-family: var(--img-font-cn); color: var(--img-text-primary);
+  background: var(--img-surface);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.img-input-area:focus {
+  outline: none; border-color: var(--img-pink);
+  box-shadow: 0 0 0 4px rgba(255, 176, 200, 0.15);
+}
+.img-input-area::placeholder { color: var(--img-text-muted); }
+
+/* ===== 进度条 ===== */
+@keyframes img-spin { to { transform: rotate(360deg); } }
+.img-spinner {
+  width: 48px; height: 48px;
+  border: 3px solid var(--img-pink-light);
+  border-top-color: var(--img-pink-deep);
+  border-radius: 50%;
+  animation: img-spin 0.8s linear infinite;
+}
+.img-progress-track {
+  width: 240px; height: 8px;
+  background: var(--img-pink-light);
+  border-radius: 4px; overflow: hidden;
+}
+.img-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--img-pink), var(--img-pink-deep));
+  border-radius: 4px;
+  transition: width 0.5s ease;
 }
