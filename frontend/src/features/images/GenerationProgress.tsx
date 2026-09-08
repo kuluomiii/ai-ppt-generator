@@ -23,7 +23,7 @@ export function GenerationProgress({
           <img
             src={image_url}
             alt="生成结果"
-            className="max-h-[500px] w-full rounded-[var(--img-radius-lg)] border border-[var(--img-border)] object-contain shadow-[0_8px_24px_var(--img-shadow)]"
+            className="max-h-[55vh] w-full rounded-[var(--img-radius-lg)] border border-[var(--img-border)] object-contain shadow-[0_8px_24px_var(--img-shadow)] sm:max-h-[500px]"
           />
         )}
         <div className="flex items-center gap-3">

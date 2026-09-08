@@ -22,8 +22,8 @@ export default function ImagesPage() {
   if (projects.isLoading) {
     return (
       <div className="images-module">
-        <div className="mx-auto max-w-[1200px] px-8 py-10">
-          <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="mx-auto max-w-[1200px] px-4 py-6 sm:px-8 sm:py-10">
+          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 xl:grid-cols-4">
             {[1, 2, 3, 4].map((i) => (
               <li
                 key={i}
@@ -40,7 +40,7 @@ export default function ImagesPage() {
   if (projects.isError) {
     return (
       <div className="images-module">
-        <div className="mx-auto max-w-[1200px] px-8 py-10">
+        <div className="mx-auto max-w-[1200px] px-4 py-6 sm:px-8 sm:py-10">
           <p
             role="alert"
             className="rounded-[var(--img-radius-md)] bg-[rgba(255,230,230,0.6)] px-4 py-3 text-sm text-[#E07070]"
@@ -56,27 +56,27 @@ export default function ImagesPage() {
 
   return (
     <div className="images-module">
-      <div className="mx-auto max-w-[1200px] px-8 py-10">
+      <div className="mx-auto max-w-[1200px] px-4 py-6 sm:px-8 sm:py-10">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="mb-2 text-[28px] font-bold text-[var(--img-text-primary)]">
+        <div className="mb-6 sm:mb-8">
+          <h1 className="mb-2 text-[22px] font-bold text-[var(--img-text-primary)] sm:text-[28px]">
             我的插画集
           </h1>
-          <p className="text-sm text-[var(--img-text-secondary)]">
+          <p className="text-[13px] text-[var(--img-text-secondary)] sm:text-sm">
             最近生成的 AI 插画，点击可预览大图
           </p>
         </div>
 
         {/* Empty state */}
         {items.length === 0 && (
-          <div className="flex flex-col items-center py-20 text-center">
-            <div className="mb-5 grid size-20 place-items-center rounded-full bg-gradient-to-br from-[var(--img-pink-light)] to-[var(--img-yellow-light)] text-[32px]">
+          <div className="flex flex-col items-center py-14 text-center sm:py-20">
+            <div className="mb-5 grid size-16 place-items-center rounded-full bg-gradient-to-br from-[var(--img-pink-light)] to-[var(--img-yellow-light)] text-[26px] sm:size-20 sm:text-[32px]">
               🎨
             </div>
-            <p className="mb-2 text-lg font-semibold text-[var(--img-text-primary)]">
+            <p className="mb-2 text-base font-semibold text-[var(--img-text-primary)] sm:text-lg">
               还没有生成过图片
             </p>
-            <p className="mb-6 text-sm text-[var(--img-text-secondary)]">
+            <p className="mb-6 text-[13px] text-[var(--img-text-secondary)] sm:text-sm">
               选择风格和需求，让 AI 为你创作插画
             </p>
             <button
@@ -92,7 +92,7 @@ export default function ImagesPage() {
 
         {/* Card grid */}
         {items.length > 0 && (
-          <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 xl:grid-cols-4">
             {items.map((project) => (
               <ImageCard
                 key={project.id}

@@ -22,6 +22,9 @@ export default function App() {
       <Routes>
         <Route path="/login" element={<AuthPage />} />
 
+        {/* 根路径直达插画列表；PPT 入口已隐藏，但路由保留可直接访问 */}
+        <Route path="/" element={<Navigate to="/images" replace />} />
+
         <Route
           element={
             <RequireAuth>
@@ -48,7 +51,7 @@ export default function App() {
           <Route path="/projects/:projectId" element={<ProjectDetailPage />} />
         </Route>
 
-        <Route path="*" element={<Navigate to="/projects" replace />} />
+        <Route path="*" element={<Navigate to="/images" replace />} />
       </Routes>
     </BrowserRouter>
   )

@@ -1,8 +1,6 @@
-import { type FormEvent, useState } from 'react'
+import { type FormEvent, type InputHTMLAttributes, useId, useState } from 'react'
 import { Navigate, useLocation, useNavigate } from 'react-router'
 import { BrandMark } from '@/components/BrandMark'
-import { Button } from '@/components/ui/Button'
-import { TextField } from '@/components/ui/TextField'
 import { login, register } from '@/features/auth/api'
 import { useAuthStore } from '@/features/auth/store'
 import { errorMessage } from '@/lib/errors'
@@ -41,14 +39,14 @@ export default function AuthPage() {
   // 有本地 token 时先等 restore，避免已登录用户闪一下登录表单
   if (restoring) {
     return (
-      <div className="grid min-h-screen place-items-center text-sm text-ink-muted">
+      <div className="images-module grid min-h-screen place-items-center text-sm text-[var(--img-text-secondary)]">
         正在恢复登录状态…
       </div>
     )
   }
 
   if (user) {
-    return <Navigate to="/projects" replace />
+    return <Navigate to="/images" replace />
   }
 
   const copy = COPY[mode]
@@ -60,7 +58,7 @@ export default function AuthPage() {
     try {
       const session = await (mode === 'login' ? login : register)({ email, password })
       applySession(session)
-      const from = (location.state as { from?: string } | null)?.from ?? '/projects'
+      const from = (location.state as { from?: string } | null)?.from ?? '/images'
       navigate(from, { replace: true })
     } catch (cause) {
       setError(errorMessage(cause instanceof Error ? cause : null, '网络异常，请稍后重试'))
@@ -70,19 +68,21 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="bg-aurora flex min-h-screen items-center justify-center px-6 py-16">
+    <div className="images-module flex min-h-screen items-center justify-center px-5 py-10 sm:px-6 sm:py-16">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
-          <BrandMark className="mx-auto mb-5 size-11 shadow-card" />
-          <h1 className="text-2xl font-semibold tracking-tight">{copy.title}</h1>
-          <p className="mt-2 text-sm text-ink-muted">
-            把一段想法变成可以直接编辑的 16:9 PPT
+          <BrandMark className="mx-auto mb-5 size-11 shadow-[0_8px_24px_var(--img-shadow)]" />
+          <h1 className="text-2xl font-bold tracking-tight text-[var(--img-text-primary)]">
+            {copy.title}
+          </h1>
+          <p className="mt-2 text-sm text-[var(--img-text-secondary)]">
+            描述你的想法，让 AI 为你绘制插画
           </p>
         </div>
 
-        <div className="rounded-3xl border border-line bg-surface p-6 shadow-card">
+        <div className="rounded-[var(--img-radius-lg)] border border-[var(--img-border)] bg-white/85 p-6 shadow-[0_8px_24px_var(--img-shadow)]">
           <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
-            <TextField
+            <CreamField
               label="邮箱"
               type="email"
               value={email}
@@ -91,7 +91,7 @@ export default function AuthPage() {
               autoComplete="email"
               required
             />
-            <TextField
+            <CreamField
               label="密码"
               type="password"
               value={password}
@@ -103,18 +103,21 @@ export default function AuthPage() {
             />
 
             {error && (
-              <p role="alert" className="rounded-xl bg-negative/8 px-3.5 py-2.5 text-[13px] text-negative">
+              <p
+                role="alert"
+                className="rounded-[var(--img-radius-md)] bg-[rgba(255,230,230,0.6)] px-3.5 py-2.5 text-[13px] text-[#E07070]"
+              >
                 {error}
               </p>
             )}
 
-            <Button type="submit" size="lg" disabled={submitting} className="mt-1 w-full">
+            <button type="submit" disabled={submitting} className="img-btn-primary mt-1 w-full">
               {submitting ? '处理中…' : copy.submit}
-            </Button>
+            </button>
           </form>
         </div>
 
-        <p className="mt-6 text-center text-sm text-ink-muted">
+        <p className="mt-6 text-center text-sm text-[var(--img-text-secondary)]">
           {copy.switchHint}
           <button
             type="button"
@@ -122,12 +125,35 @@ export default function AuthPage() {
               setMode(mode === 'login' ? 'register' : 'login')
               setError(null)
             }}
-            className="ml-1 font-medium text-accent underline-offset-4 transition-colors hover:underline"
+            className="ml-1 font-medium text-[var(--img-pink-deep)] underline-offset-4 transition-colors hover:underline"
           >
             {copy.switchTo}
           </button>
         </p>
       </div>
+    </div>
+  )
+}
+
+/** 奶油风输入框：16px 字号防 iOS 聚焦缩放，粉色 focus ring。 */
+function CreamField({
+  label,
+  ...props
+}: { label: string } & InputHTMLAttributes<HTMLInputElement>) {
+  const id = useId()
+  return (
+    <div className="flex flex-col gap-1.5">
+      <label
+        htmlFor={id}
+        className="text-[13px] font-semibold text-[var(--img-text-primary)]"
+      >
+        {label}
+      </label>
+      <input
+        {...props}
+        id={id}
+        className="h-11 rounded-[var(--img-radius-md)] border border-[var(--img-border)] bg-[#FFFDFB] px-3.5 text-[16px] text-[var(--img-text-primary)] transition-shadow placeholder:text-[var(--img-text-muted)] focus:border-[var(--img-pink-deep)] focus:shadow-[0_0_0_3px_rgba(255,143,174,0.15)] focus:outline-none"
+      />
     </div>
   )
 }

@@ -112,21 +112,21 @@ export default function ImageCreatePage() {
 
   return (
     <div className="images-module">
-      <div className="mx-auto max-w-[680px] px-8 py-10">
+      <div className="mx-auto max-w-[680px] px-4 py-6 sm:px-8 sm:py-10">
         {/* Back link */}
         <button
           type="button"
           onClick={() => navigate('/images')}
-          className="mb-6 flex items-center gap-1.5 border-none bg-none text-[13px] text-[var(--img-text-secondary)] hover:text-[var(--img-pink-deep)]"
+          className="mb-5 flex items-center gap-1.5 border-none bg-none text-[13px] text-[var(--img-text-secondary)] hover:text-[var(--img-pink-deep)] sm:mb-6"
         >
           <ArrowLeft className="size-4" />
           返回列表
         </button>
 
-        <h1 className="mb-2 text-[28px] font-bold text-[var(--img-text-primary)]">
+        <h1 className="mb-2 text-[22px] font-bold text-[var(--img-text-primary)] sm:text-[28px]">
           创作新插画
         </h1>
-        <p className="mb-8 text-sm text-[var(--img-text-secondary)]">
+        <p className="mb-6 text-[13px] text-[var(--img-text-secondary)] sm:mb-8 sm:text-sm">
           描述你的想法，选择风格，让 AI 为你绘制
         </p>
 

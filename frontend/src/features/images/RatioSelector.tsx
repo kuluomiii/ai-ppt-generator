@@ -17,7 +17,7 @@ export function RatioSelector({
   onChange: (ratio: ImageAspectRatio) => void
 }) {
   return (
-    <div className="flex gap-3">
+    <div className="flex gap-2 sm:gap-3">
       {RATIO_OPTIONS.map((option) => {
         const selected = value === option.value
         const box = RATIO_BOX[option.value]
@@ -27,7 +27,7 @@ export function RatioSelector({
             type="button"
             onClick={() => onChange(option.value)}
             className={cn(
-              'flex flex-1 items-center gap-2.5 rounded-[var(--img-radius-md)] border-[1.5px] px-4 py-3 transition-all',
+              'flex flex-1 items-center gap-2 rounded-[var(--img-radius-md)] border-[1.5px] px-2.5 py-2.5 transition-all sm:gap-2.5 sm:px-4 sm:py-3',
               selected
                 ? 'border-[var(--img-yellow-deep)] bg-[var(--img-yellow-light)] shadow-[0_0_0_3px_rgba(255,190,77,0.12)]'
                 : 'border-[var(--img-border)] bg-[var(--img-surface)] hover:border-[var(--img-yellow)]',

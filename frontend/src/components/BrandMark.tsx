@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils'
 
 /**
- * 应用品牌标识，与 public/favicon.svg 同一套图形。
+ * 应用品牌标识：奶油甜品风（粉色渐变底 + 白色画笔与星星）。
  * 自带底色与圆角，调用方只需给尺寸（size-7 之类）。
  */
 export function BrandMark({ className }: { className?: string }) {
@@ -10,31 +10,30 @@ export function BrandMark({ className }: { className?: string }) {
       viewBox="0 0 32 32"
       fill="none"
       role="img"
-      aria-label="AI PPT"
+      aria-label="AI 插画"
       className={cn('shrink-0', className)}
     >
-      <rect width="32" height="32" rx="7" fill="#171614" />
-      <rect x="9.5" y="7" width="16" height="10" rx="1.4" fill="#2a2825" />
-      <rect
-        x="9.5"
-        y="7"
-        width="16"
-        height="10"
-        rx="1.4"
-        stroke="#3a3732"
-        strokeWidth="0.6"
-      />
-      <rect x="5.5" y="10.5" width="18.5" height="11.5" rx="1.5" fill="#fbfaf6" />
-      <rect x="5.5" y="10.5" width="6" height="11.5" rx="1.5" fill="#c8442a" />
-      <rect x="13.5" y="14" width="8" height="1.5" rx="0.75" fill="#8a8478" />
-      <rect x="13.5" y="17.5" width="5.5" height="1.5" rx="0.75" fill="#b5aea0" />
+      <defs>
+        <linearGradient id="brandmark-bg" x1="0" y1="0" x2="32" y2="32">
+          <stop offset="0" stopColor="#FFB0C8" />
+          <stop offset="1" stopColor="#FF8FAE" />
+        </linearGradient>
+      </defs>
+      <rect width="32" height="32" rx="9" fill="url(#brandmark-bg)" />
+      {/* 画笔 */}
       <path
-        fill="#fbfaf6"
-        d="M25.2 6.2l.55 1.55 1.55.55-1.55.55-.55 1.55-.55-1.55-1.55-.55 1.55-.55z"
+        d="M11 21.5l1-3.6 7.4-7.4a1.6 1.6 0 0 1 2.3 0l.9.9a1.6 1.6 0 0 1 0 2.3L15.2 21l-3.6 1a.4.4 0 0 1-.6-.5z"
+        fill="#FFF9F3"
+      />
+      <path d="M12.4 17.2l2.9 2.9-1.6.4a.4.4 0 0 1-.5-.2l-.9-2.7a.3.3 0 0 1 .1-.4z" fill="#FFD98E" />
+      {/* 星星 */}
+      <path
+        d="M9.2 7.6l.62 1.74 1.74.62-1.74.62-.62 1.74-.62-1.74-1.74-.62 1.74-.62z"
+        fill="#FFF3D6"
       />
       <path
-        fill="#cfc9bc"
-        d="M28.1 9.4l.28.78.78.28-.78.28-.28.78-.28-.78-.78-.28.78-.28z"
+        d="M24.6 22.4l.4.1.1.4.1-.4.4-.1-.4-.1-.1-.4-.1.4z"
+        fill="#FFF3D6"
       />
     </svg>
   )

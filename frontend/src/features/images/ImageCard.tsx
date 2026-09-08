@@ -48,20 +48,20 @@ export function ImageCard({
         </div>
 
         {/* 信息区 */}
-        <div className="flex flex-1 flex-col p-4">
-          <p className="mb-2.5 line-clamp-2 text-[13px] leading-normal text-[var(--img-text-primary)]">
+        <div className="flex flex-1 flex-col p-3 sm:p-4">
+          <p className="mb-2.5 line-clamp-2 text-[12px] leading-normal text-[var(--img-text-primary)] sm:text-[13px]">
             {project.raw_prompt}
           </p>
-          <div className="mt-auto flex items-center justify-between text-[11px] text-[var(--img-text-muted)]">
-            <span className="rounded-lg bg-[var(--img-yellow-light)] px-2.5 py-0.5 font-medium text-[var(--img-yellow-deep)]">
+          <div className="mt-auto flex items-center justify-between gap-1 text-[11px] text-[var(--img-text-muted)]">
+            <span className="truncate rounded-lg bg-[var(--img-yellow-light)] px-2 py-0.5 font-medium text-[var(--img-yellow-deep)] sm:px-2.5">
               {styleLabel}
             </span>
-            <span>{relativeTime(project.created_at)}</span>
+            <span className="shrink-0">{relativeTime(project.created_at)}</span>
           </div>
         </div>
 
-        {/* 操作菜单 */}
-        <div className="absolute top-3 left-3 opacity-0 transition-opacity group-hover:opacity-100">
+        {/* 操作菜单：触屏无 hover，移动端常显 */}
+        <div className="absolute top-3 left-3 opacity-100 transition-opacity sm:opacity-0 sm:group-hover:opacity-100">
           <MenuPopover
             align="left"
             trigger={({ open, toggle }) => (

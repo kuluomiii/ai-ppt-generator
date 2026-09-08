@@ -141,8 +141,14 @@
   background: var(--img-bg);
   color: var(--img-text-primary);
   font-family: var(--img-font-cn);
-  min-height: calc(100vh - 64px);
+  min-height: calc(100vh - 56px); /* 移动端 header 高 56px */
   position: relative;
+  /* H5：防装饰光斑引起横向滚动 */
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+@media (min-width: 640px) {
+  .images-module { min-height: calc(100vh - 64px); }
 }
 
 /* 装饰背景光斑 */
@@ -237,10 +243,13 @@
 .img-input-area {
   width: 100%; min-height: 120px; resize: vertical;
   border: 1.5px solid var(--img-border); border-radius: var(--img-radius-md);
-  padding: 16px; font-size: 14px; line-height: 1.6;
+  padding: 16px; font-size: 16px; line-height: 1.6; /* 16px 防 iOS 聚焦自动缩放 */
   font-family: var(--img-font-cn); color: var(--img-text-primary);
   background: var(--img-surface);
   transition: border-color 0.2s, box-shadow 0.2s;
+}
+@media (min-width: 640px) {
+  .img-input-area { font-size: 14px; }
 }
 .img-input-area:focus {
   outline: none; border-color: var(--img-pink);
@@ -258,7 +267,7 @@
   animation: img-spin 0.8s linear infinite;
 }
 .img-progress-track {
-  width: 240px; height: 8px;
+  width: min(240px, 70vw); height: 8px; /* H5：窄屏不溢出 */
   background: var(--img-pink-light);
   border-radius: 4px; overflow: hidden;
 }

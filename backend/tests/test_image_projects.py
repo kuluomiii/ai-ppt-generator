@@ -419,6 +419,77 @@ async def test_optimize_prompt_passes_aspect_ratio_to_llm() -> None:
 
 
 # ---------------------------------------------------------------------------
+# 中文模板专项测试
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.asyncio
+async def test_templates_are_chinese_and_keep_placeholders() -> None:
+    """三套模板均为中文，且保留核心变量占位符。"""
+    from app.services.image_generation import STYLE_TEMPLATES
+
+    required_placeholders = ["[TOPIC]", "[MAIN_TITLE]", "[ASPECT_RATIO]", "[LAYOUT_TYPE]"]
+    for style, template in STYLE_TEMPLATES.items():
+        for placeholder in required_placeholders:
+            assert placeholder in template, f"{style} 缺少占位符 {placeholder}"
+        # 模板说明部分必须是中文（抽查关键小节标题）
+        assert "=== 标题" in template or "=== 标题样式 ===" in template, (
+            f"{style} 模板未翻译为中文"
+        )
+        assert "=== 场景与布局 ===" in template, f"{style} 模板未翻译为中文"
+
+
+@pytest.mark.asyncio
+async def test_templates_require_simplified_chinese_text() -> None:
+    """三套模板都必须包含'图片文字使用简体中文'的要求。"""
+    from app.services.image_generation import STYLE_TEMPLATES
+
+    for style, template in STYLE_TEMPLATES.items():
+        assert "简体中文" in template, f"{style} 模板缺少简体中文文字要求"
+        assert "无错别字" in template, f"{style} 模板缺少无错别字要求"
+
+
+@pytest.mark.asyncio
+async def test_build_style_prompt_instructs_chinese_output_and_topic_retention() -> None:
+    """build_style_prompt 要求 LLM 输出中文并保留用户中文主题。"""
+    from app.services.image_generation import build_style_prompt
+
+    prompt = build_style_prompt("chiikawa_science", "光合作用原理", "16:9")
+    assert "光合作用原理" in prompt
+    assert "中文" in prompt, "指令未要求输出中文提示词"
+    assert "原样" in prompt, "指令未要求保留用户中文主题"
+    assert "简体中文" in prompt, "指令未要求图片文字使用简体中文"
+
+
+@pytest.mark.asyncio
+async def test_optimize_prompt_system_message_is_chinese() -> None:
+    """optimize_prompt 传给 LLM 的 system prompt 为中文，且含文字要求。"""
+    from unittest.mock import AsyncMock
+
+    from langchain_core.language_models.chat_models import BaseChatModel
+    from langchain_core.messages import AIMessage
+
+    from app.services.image_generation import optimize_prompt
+
+    mock_chat = AsyncMock(spec=BaseChatModel)
+    mock_chat.ainvoke = AsyncMock(
+        return_value=AIMessage(content="一份完整的中文提示词，图片中所有文字使用简体中文，无错别字。")
+    )
+
+    await optimize_prompt(
+        chat=mock_chat,
+        style="minimal_doodle",
+        raw_prompt="测试主题",
+        aspect_ratio="1:1",
+    )
+
+    system_msg = mock_chat.ainvoke.call_args[0][0][0]
+    assert "中文" in system_msg.content
+    assert "简体中文" in system_msg.content
+    assert "无错别字" in system_msg.content
+
+
+# ---------------------------------------------------------------------------
 # 认证
 # ---------------------------------------------------------------------------
 
