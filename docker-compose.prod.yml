@@ -27,8 +27,10 @@ services:
     environment:
       DATABASE_URL: postgresql+asyncpg://aippt:${POSTGRES_PASSWORD:-aippt}@postgres:5432/aippt
       REDIS_URL: redis://redis:6379/0
+      STORAGE_LOCAL_DIR: /data/storage
     volumes:
       - ./shared:/shared:ro
+      - storage_data:/data/storage
     depends_on:
       postgres: { condition: service_healthy }
       redis: { condition: service_healthy }
@@ -40,8 +42,10 @@ services:
     environment:
       DATABASE_URL: postgresql+asyncpg://aippt:${POSTGRES_PASSWORD:-aippt}@postgres:5432/aippt
       REDIS_URL: redis://redis:6379/0
+      STORAGE_LOCAL_DIR: /data/storage
     volumes:
       - ./shared:/shared:ro
+      - storage_data:/data/storage
     depends_on:
       postgres: { condition: service_healthy }
       redis: { condition: service_healthy }
@@ -58,3 +62,4 @@ services:
 
 volumes:
   postgres_data:
+  storage_data:
